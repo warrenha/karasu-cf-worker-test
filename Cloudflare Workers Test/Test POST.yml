@@ -1,0 +1,27 @@
+info:
+  name: Test POST
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:8787/?test=bob
+  params:
+    - name: test
+      value: bob
+      type: query
+  body:
+    type: json
+    data: |
+      {
+        "name": "Fred",
+        "email": "hello@nope",
+        "message": "This is a test message"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

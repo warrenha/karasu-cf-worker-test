@@ -68,11 +68,17 @@ export default {
             }
 
             //return Response.json(data)
-            return new Response(JSON.stringify(data), {
+            //return new Response(JSON.stringify(data), {
+            //    headers: {
+            //        'Content-Type': 'application/json',
+            //        ...corsHeaders
+            //    },
+            //});
+            return Response.json(data, {
                 headers: {
                     'Content-Type': 'application/json',
-                    ...corsHeaders,
-                },
+                    ...corsHeaders
+                }
             });
         }
 

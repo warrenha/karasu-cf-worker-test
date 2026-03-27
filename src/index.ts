@@ -33,6 +33,7 @@ export default {
             });
         }
 
+        // Parse the JSON body of the request
         const parseBody = async () => {
             if (contentType.includes('application/json')) {
                 return await request.json()

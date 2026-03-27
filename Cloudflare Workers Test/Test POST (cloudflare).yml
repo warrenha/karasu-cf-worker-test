@@ -1,14 +1,14 @@
 info:
-  name: Test POST
+  name: Test POST (cloudflare)
   type: http
-  seq: 2
+  seq: 3
 
 http:
   method: POST
-  url: http://localhost:8787/?test=bilbo
+  url: https://karasu-cf-worker-test.karasu-account.workers.dev/?test=thingy
   params:
     - name: test
-      value: bilbo
+      value: thingy
       type: query
   body:
     type: json

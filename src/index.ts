@@ -10,6 +10,13 @@
  *
  * Learn more at https://developers.cloudflare.com/workers/
  */
+
+const corsHeaders = {
+    'Access-Control-Allow-Origin': '*', // or your domain
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 export default {
 
 	async fetch(request: Request): Promise<Response> {
@@ -17,6 +24,14 @@ export default {
         const method = request.method
         const contentType = request.headers.get('content-type') || ''
         console.info(`contentType: ${contentType}`)
+
+        // CORS preflight
+        const handleOptions = () => {
+            return new Response(null, {
+                status: 204,
+                headers: corsHeaders
+            });
+        }
 
         const parseBody = async () => {
             if (contentType.includes('application/json')) {
@@ -35,20 +50,30 @@ export default {
             }
         }
 
-        const value = url.searchParams.get('test') || null
-        const body = await parseBody()
-        const thingy = JSON.stringify(body)
-        console.info(`body: ${JSON.stringify(body)}`)
+        const handlePost = async () => {
+            const value = url.searchParams.get('test') || null
+            const body = await parseBody()
+            const thingy = JSON.stringify(body)
+            console.info(`body: ${JSON.stringify(body)}`)
 
-        const data = {
-            hello: 'world',
-            method,
-            contentType,
-            value,
-            body,
-            thingy,
-            version: 1.0
+            const data = {
+                hello: 'world',
+                method,
+                contentType,
+                value,
+                body,
+                thingy,
+                version: 1.0
+            }
+            return Response.json(data)
         }
-        return Response.json(data)
+
+        if (method === 'OPTIONS') {
+            return handleOptions()
+        }
+        else if (method === 'POST') {
+            return handlePost()
+        }
+        return Response.json({ error: `Unexpected method: ${method}`})
 	}
 } satisfies ExportedHandler

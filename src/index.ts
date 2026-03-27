@@ -66,7 +66,20 @@ export default {
                 thingy,
                 version: 1.0
             }
-            return Response.json(data)
+
+            //return Response.json(data)
+            //return new Response(JSON.stringify(data), {
+            //    headers: {
+            //        'Content-Type': 'application/json',
+            //        ...corsHeaders
+            //    },
+            //});
+            return Response.json(data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...corsHeaders
+                }
+            });
         }
 
         if (method === 'OPTIONS') {
